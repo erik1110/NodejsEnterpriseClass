@@ -11,3 +11,6 @@
 - routes: 存放處理不同 HTTP 請求的路由程式碼，將路由請求映射到對應的控制器（controller）。
 - public: 存放靜態檔案，例如圖片、CSS、JavaScript 等，可直接由瀏覽器訪問。
 - config: 存放專案的配置設定檔，例如資料庫配置、環境變數等。
+
+## Render 部署 Node 伺服器
+* [Render 伺服器部署 Node.js]
