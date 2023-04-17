@@ -2,7 +2,7 @@ const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {
     info: {
-        title: 'Meta API',
+        title: '第五週作業',
         description: '示範'
     },
     host: 'localhost:3000',
