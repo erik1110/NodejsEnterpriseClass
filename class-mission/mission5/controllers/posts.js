@@ -1,5 +1,6 @@
 const handleSuccess = require('../services/handleSuccess');
 const handleError = require('../services/handleError');
+const appError = require('../services/appError');
 const Post = require('../models/posts');
 const User = require('../models/users');
 
@@ -48,7 +49,7 @@ const posts = {
         }).sort(timeSortNew);
         handleSuccess(res, myPost);
     },
-    async createPosts(req, res){
+    async createPosts(req, res, next){
         /** 
          * #swagger.tags = ['Posts - 貼文']
          * #swagger.description = '新增一筆貼文'
@@ -83,21 +84,22 @@ const posts = {
         /* #swagger.security = [{
                 "apiKeyAuth": []
         }] */
-        try {
-            const data = req.body;
-            if (data.content) {
-                const newPost = await Post.create({
-                    user: req.body.user,
-                    content: req.body.content,
-                    image: req.body.image,
-                    likes: req.body.likes
-                });
-                handleSuccess(res, newPost);
-            } else {
-                handleError(res);
-            }
-        } catch(err){
-            handleError(res, err);
+        const data = req.body;
+        // 自定義 error
+        if (data.user === undefined) {
+            return next(appError(400, '你沒有填寫 user 資料', next))
+        }
+        if (data.content) {
+            const newPost = await Post.create({
+                user: req.body.user,
+                content: req.body.content,
+                image: req.body.image,
+                likes: req.body.likes
+            });
+            handleSuccess(res, newPost);
+        } else {
+            // 通用性 error
+            handleError(res);
         }
     },
     async deleteOnePosts(req, res){

@@ -3,6 +3,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+const notFound = require('./middleware/notFound');
+const resError = require('./middleware/resError');
 const swaggerUI = require('swagger-ui-express');
 const swaggerFile = require('./swagger-output.json');
 
@@ -25,5 +27,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerFile))
+
+// 錯誤管理
+require("./services/process");
+app.use(notFound);
+app.use(resError);
 
 module.exports = app;
