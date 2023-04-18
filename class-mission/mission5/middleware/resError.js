@@ -33,7 +33,11 @@ function resError(err, req, res, next) {
     err.message = "資料欄位未填寫正確，請重新輸入!";
     err.isOperational = true;
     return resErrorProd(err, res)
-  };
+  } else if (err.name === 'CastError'){
+    err.message = "找不到資料，請重新輸入!";
+    err.isOperational = true;
+    return resErrorProd(err, res)
+  }
   resErrorProd(err, res)
 }
 

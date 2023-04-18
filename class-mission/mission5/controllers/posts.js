@@ -5,7 +5,7 @@ const Post = require('../models/posts');
 const User = require('../models/users');
 
 const posts = {
-    async getPosts(req, res){
+    async getPosts(req, res, next){
     /** 
      * #swagger.tags = ['Get - 貼文']
      * #swagger.description = '取得全部貼文 API '
@@ -102,44 +102,33 @@ const posts = {
             handleError(res);
         }
     },
-    async deleteOnePosts(req, res){
-        try {
-            const _id = req.params.id;
-            const data = req.body;
-            if (data.content) {
-                const result = await Post.findByIdAndDelete(_id);
-                if (result) {
-                    handleSuccess(res, result);
-                } else {
-                    handleError(res);
-                }
-            } else {
-                handleError(res);
-            }
-        } catch(err){
-            handleError(res, err);
+    async deleteOnePosts(req, res, next){
+        const _id = req.params.id;
+        console.log(_id);
+        const result = await Post.findByIdAndDelete(_id);
+        console.log(result);
+        if (result) {
+            handleSuccess(res, result);
+        } else {
+            handleError(res);
         }
     },
-    async updateOnePosts(req, res){
-        try {
-            const _id = req.params.id;
-            const data = req.body;
-            if (data.content) {
-                const update = {
-                    name: req.body.name,
-                    content: req.body.content
-                  };
-                const result = await Post.findByIdAndUpdate(_id, update, { new: true });
-                if (result) {
-                    handleSuccess(res, result);
-                } else {
-                    handleError(res);
-                }
+    async updateOnePosts(req, res, next){
+        const _id = req.params.id;
+        const data = req.body;
+        if (data.content) {
+            const update = {
+                name: req.body.name,
+                content: req.body.content
+                };
+            const result = await Post.findByIdAndUpdate(_id, update, { new: true });
+            if (result) {
+                handleSuccess(res, result);
             } else {
                 handleError(res);
             }
-        } catch(err){
-            handleError(res, err);
+        } else {
+            handleError(res);
         }
     },
 }
